@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+cat <<'FIG'
+╭━━━┳━━━╮╭╮╱╭╮╭━━╮╱╱╱╱╱╭╮╱╱╱╭╮╭╮╱╱╱╭╮
+┃╭━╮┃╭━╮┃┃┃╱┃┃╰┫┣╯╱╱╱╱╭╯╰╮╱╱┃┃┃┃╱╱╭╯╰╮
+┃╰━╯┃╰━╯┣┫╰━╯┃╱┃┃╭━╮╭━┻╮╭╋━━┫┃┃┃╭━┻╮╭╋┳━━┳━╮
+┃╭╮╭┫╭━━╋╋━━╮┃╱┃┃┃╭╮┫━━┫┃┃╭╮┃┃┃┃┃╭╮┃┃┣┫╭╮┃╭╮╮
+┃┃┃╰┫┃╱╱┃┃╱╱┃┃╭┫┣┫┃┃┣━━┃╰┫╭╮┃╰┫╰┫╭╮┃╰┫┃╰╯┃┃┃┃
+╰╯╰━┻╯╱╱╰╯╱╱╰╯╰━━┻╯╰┻━━┻━┻╯╰┻━┻━┻╯╰┻━┻┻━━┻╯╰╯
+╭━━╮╱╱╱╱╱╭━━━╮╱╱╭╮╱╱╱╱╭╮╭╮
+┃╭╮┃╱╱╱╱╱┃╭━╮┃╱╱┃┃╱╱╱╱┃┃┃┃
+┃╰╯╰┳╮╱╭╮┃╰━━┳━━┫╰━┳━━┫┃┃┃╭━━┳━━┳━━╮
+┃╭━╮┃┃╱┃┃╰━━╮┃┃━┫╭╮┃╭╮┃┃┃┃┃╭╮┃━━┫━━┫
+┃╰━╯┃╰━╯┃┃╰━╯┃┃━┫╰╯┃╭╮┃╰┫╰┫╰╯┣━━┣━━┃
+╰━━━┻━╮╭╯╰━━━┻━━┻━━┻╯╰┻━┻━┻━━┻━━┻━━╯
+╱╱╱╱╭━╯┃
+╱╱╱╱╰━━╯
+FIG
+TOKEN="$(cat /boot/token_device)"
+cd $HOME
+TOKEN >> .token_device
+sudo sed -i -- "s/#xserver-command=X/xserver-command=X -nocursor/" /etc/lightdm/lightdm.conf
+sudo mkdir /opt/autostart
+echo 'Desktop Entry]
+Name=start-chrome.sh
+Exec=/opt/autostart/start-chrome.sh
+Type=Application
+Terminal=false' >> start-chrome.desktop
+sudo cp start-chrome.desktop /etc/xdg/autostart/
+echo '#!/bin/bash
+xset s noblank
+xset s off
+xset -dpms
+xset dpms force on
+xrandr --output HDMI-1 --rotate left
+chromium-browser --noerrdialogs --disable-infobars --disable-pinch  --kiosk https://www.officesm.flyingatom.tech/landing.php?token='$TOKEN >> start-chrome.sh
+sudo cp start-chrome.sh /opt/autostart/
+sudo chmod +x /opt/autostart/start-chrome.sh
+
+vcgencmd measure_temp
+cpu=$(</sys/class/thermal/thermal_zone0/temp)
+echo "$((cpu/1000)) c"
+
+wget https://download.teamviewer.com/download/linux/teamviewer_arm64.deb
