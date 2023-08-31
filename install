@@ -20,9 +20,21 @@ cd $HOME
 TOKEN >> .token
 sudo sed -i -- "s/#xserver-command=X/xserver-command=X -nocursor/" /etc/lightdm/lightdm.conf
 sudo mkdir /opt/autostart
-echo '[Desktop Entry]\nName=start-chrome.sh\nExec=/opt/autostart/start-chrome.sh\nType=Application\nTerminal=false' >> start-chrome.desktop
+echo '[Desktop Entry]
+Name=start-chrome.sh
+Exec=/opt/autostart/start-chrome.sh
+Type=Application
+Terminal=false' >> start-chrome.desktop
 sudo cp start-chrome.desktop /etc/xdg/autostart/
-echo '#!/bin/bash\nxset dpms force off\nsleep 3s\nxset s noblank\nxset s off\nxset -dpms\nxset dpms force on\nxrandr --output HDMI-1 --rotate left\nchromium-browser --noerrdialogs --disable-infobars --disable-pinch  --kiosk https://www.officesm.flyingatom.tech/landing.php?token='$TOKEN >> start-chrome.sh
+echo '#!/bin/bash
+xset dpms force off
+sleep 3s
+xset s noblank
+xset s off
+xset -dpms
+xset dpms force on
+xrandr --output HDMI-1 --rotate left
+chromium-browser --noerrdialogs --disable-infobars --disable-pinch  --kiosk https://www.officesm.flyingatom.tech/landing.php?token='$TOKEN >> start-chrome.sh
 sudo cp start-chrome.sh /opt/autostart/
 sudo chmod +x /opt/autostart/start-chrome.sh
 
