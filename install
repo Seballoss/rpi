@@ -15,9 +15,9 @@ cat <<'FIG'
 ╱╱╱╱╭━╯┃
 ╱╱╱╱╰━━╯
 FIG
-TOKEN="$(cat /boot/token_device)"
+TOKEN="$(cat /boot/token)"
 cd $HOME
-TOKEN >> .token_device
+TOKEN >> .token
 sudo sed -i -- "s/#xserver-command=X/xserver-command=X -nocursor/" /etc/lightdm/lightdm.conf
 sudo mkdir /opt/autostart
 echo 'Desktop Entry]
