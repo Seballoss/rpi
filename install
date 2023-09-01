@@ -29,9 +29,6 @@ sudo cp start-chrome.desktop /etc/xdg/autostart/
 echo '#!/bin/bash
 xset dpms force off
 sleep 3s
-xset s noblank
-xset s off
-xset -dpms
 xset dpms force on
 xrandr --output HDMI-1 --rotate left
 chromium-browser --noerrdialogs --disable-infobars --disable-pinch  --kiosk https://www.officesm.flyingatom.tech/landing.php?token='$TOKEN >> start-chrome.sh
